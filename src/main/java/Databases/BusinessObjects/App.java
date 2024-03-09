@@ -27,7 +27,6 @@ public class App
     public static void main(String[] args)
     {
         UserDAOInterface IUserDao = new MySqlUserDao();  //"IUserDao" -> "I" stands for for
-
 //        // Notice that the userDao reference is an Interface type.
 //        // This allows for the use of different concrete implementations.
 //        // e.g. we could replace the MySqlUserDao with an OracleUserDao
