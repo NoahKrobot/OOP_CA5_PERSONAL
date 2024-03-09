@@ -123,4 +123,44 @@ public class App
             e.printStackTrace();
         }
     }
+
+
+    public static void runTheApplication(){
+        System.out.println("Enter a number to run an action:");
+        System.out.println("\t(1) Get All Players");
+        System.out.println("\t(2) Get Player By Id");
+        System.out.println("\t(3) Delete Player By Id");
+        System.out.println("\t(4) Add a player");
+        System.out.println("\t(5) Update a player by Id");
+        System.out.println("\t(6) Find players using filter");
+
+        int choice = validInt();
+
+        System.out.println("choice is: " + choice);
+    }
+
+    public static int validInt(){
+        Scanner keyValid = new Scanner(System.in);
+        boolean runWhile= true;
+        int choice = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid.hasNextInt() ){
+                choice = keyValid.nextInt();
+
+                if(choice<7 && choice> 0){
+                    runWhile= false;
+                }else{
+                    System.out.println("Please, enter a number between 1 and 7.");
+                }
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid.next();
+            }
+        }
+        return choice;
+    }
+
 }
