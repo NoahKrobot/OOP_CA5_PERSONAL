@@ -17,6 +17,9 @@ package Databases.BusinessObjects;
  * to create the required MySQL user_database and User table.
  */
 
+import Databases.DTOs.User;
+import Databases.Daos.MySqlUserDao;
+import Databases.Daos.UserDAOInterface;
 import Databases.Exceptions.DaoException;
 
 import java.util.List;
@@ -24,9 +27,12 @@ import java.util.Scanner;
 
 public class App
 {
-    public static void main(String[] args)
-    {
-        UserDAOInterface IUserDao = new MySqlUserDao();  //"IUserDao" -> "I" stands for for
+    static UserDAOInterface IUserDao = new MySqlUserDao();
+    public static void main(String[] args) throws DaoException {
+        ;  //"IUserDao" -> "I" stands for for
+        runTheApplication();
+
+
 
 //        // Notice that the userDao reference is an Interface type.
 //        // This allows for the use of different concrete implementations.
@@ -124,4 +130,90 @@ public class App
             e.printStackTrace();
         }
     }
+
+
+    public static void runTheApplication() throws DaoException {
+        System.out.println("Enter a number to run an action:");
+        System.out.println("\t(1) Get All Players");
+        System.out.println("\t(2) Get Player By Id");
+        System.out.println("\t(3) Delete Player By Id");
+        System.out.println("\t(4) Add a player");
+        System.out.println("\t(5) Update a player by Id");
+        System.out.println("\t(6) Find players using filter");
+
+        int choice = validInt();
+        String message = "";
+        switch (choice){
+            case 1:{
+                message = "1";
+
+                List<User> users = IUserDao.findAllUsers();     // call a method in the DAO
+
+                if( users.isEmpty() )
+                    System.out.println("There are no Users");
+                else {
+                    for (User user : users)
+                        System.out.println("User: " + user.toString());
+                }
+
+
+
+
+                break;
+            }
+            case 2:{
+                message = "2";
+
+                break;
+            }
+            case 3:{
+                message = "3";
+
+                break;
+            }
+            case 4:{
+                message = "4";
+
+                break;
+            }
+            case 5:{
+                message = "5";
+
+                break;
+            }
+            case 6:{
+                message = "6";
+
+                break;
+            }
+        }
+    }
+
+    public static int validInt(){
+        Scanner keyValid = new Scanner(System.in);
+        boolean runWhile= true;
+        int choice = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid.hasNextInt() ){
+                choice = keyValid.nextInt();
+
+                if(choice<7 && choice> 0){
+                    runWhile= false;
+                }else{
+                    System.out.println("Please, enter a number between 1 and 7.");
+                }
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid.next();
+            }
+        }
+        return choice;
+    }
+
+
+
+
 }
