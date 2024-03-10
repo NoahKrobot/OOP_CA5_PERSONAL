@@ -127,25 +127,31 @@ public class App
 
     public static void runTheApplication(){
         System.out.println("Enter a number to run an action:");
-        System.out.println("\t(1) Get All Players");
-        System.out.println("\t(2) Get Player By Id");
-        System.out.println("\t(3) Delete Player By Id");
+        System.out.println("\t(1) Get All Movies");
+        System.out.println("\t(2) Get Movies By Id");
+        System.out.println("\t(3) Delete Movies By Id");
         System.out.println("\t(4) Add a player");
         System.out.println("\t(5) Update a player by Id");
         System.out.println("\t(6) Find players using filter");
 
         int choice = validInt();
+        MovieDAOInterface movieDao = new MySqlMovieDao();
+        Scanner key = new Scanner (System.in);
         switch (choice){
             case 1:{
                 message = "1";
-                MovieDAOInterface movieDao = new MySqlMovieDao();
                 List<Movie> movies = movieDao.getAllMovies();
                 System.out.println("movies: " + movies);
                 break;
             }
             case 2:{
-                System.out.println("2");
-            };
+                message = "2";
+                System.out.println("Please, enter movie name: ");
+                String input = key.next();
+                Movie usersMovie = movieDao.findMovieByName(input);
+                System.out.println("Movie you searched: " + usersMovie.toString());
+                break;
+            }
             case 3:{
                 System.out.println("3");
             };
