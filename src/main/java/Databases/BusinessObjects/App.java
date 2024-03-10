@@ -135,8 +135,30 @@ public class App
         System.out.println("\t(6) Find players using filter");
 
         int choice = validInt();
-
-        System.out.println("choice is: " + choice);
+        switch (choice){
+            case 1:{
+                message = "1";
+                MovieDAOInterface movieDao = new MySqlMovieDao();
+                List<Movie> movies = movieDao.getAllMovies();
+                System.out.println("movies: " + movies);
+                break;
+            }
+            case 2:{
+                System.out.println("2");
+            };
+            case 3:{
+                System.out.println("3");
+            };
+            case 4:{
+                System.out.println("4");
+            };
+            case 5:{
+                System.out.println("5");
+            };
+            case 6:{
+                System.out.println("6");
+            };
+        }
     }
 
     public static int validInt(){
@@ -162,5 +184,4 @@ public class App
         }
         return choice;
     }
-
 }
