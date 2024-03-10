@@ -169,6 +169,10 @@ public class App
                 String directorName = key.next();
                 System.out.println("Please, enter movie genre: ");
                 String genre = key.next();
+                System.out.println("Please, enter movie studio: ");
+                String studio = key.next();
+                System.out.println("Please, enter movie year: ");
+                int year = validInt();
 
                 //  Movie usersMovie = movieDao.addMovie();
                 System.out.println("Movie you searched: " + usersMovie.toString());
