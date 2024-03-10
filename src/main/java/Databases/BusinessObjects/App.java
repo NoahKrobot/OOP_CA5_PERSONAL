@@ -153,7 +153,12 @@ public class App
                 break;
             }
             case 3:{
-                System.out.println("3");
+                message = "3";
+                System.out.println("Please, enter movie name: ");
+                String input = key.next();
+                int numberOfDeletedRows = movieDao.deleteMovieByName(input);
+                System.out.println("Number of rows you've deleted: " + numberOfDeletedRows);
+                break;
             };
             case 4:{
                 System.out.println("4");
