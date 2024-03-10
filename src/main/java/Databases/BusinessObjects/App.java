@@ -17,7 +17,10 @@ package Databases.BusinessObjects;
  * to create the required MySQL user_database and User table.
  */
 
+import Databases.DTOs.Movie;
 import Databases.DTOs.User;
+import Databases.Daos.MovieDAOInterface;
+import Databases.Daos.MySqlMovieDao;
 import Databases.Daos.MySqlUserDao;
 import Databases.Daos.UserDAOInterface;
 import Databases.Exceptions.DaoException;
@@ -135,7 +138,7 @@ public class App
     public static void runTheApplication() throws DaoException {
         System.out.println("Enter a number to run an action:");
         System.out.println("\t(1) Get All Players");
-        System.out.println("\t(2) Get Player By Id");
+        System.out.println("\t(2) Get Move By Name");
         System.out.println("\t(3) Delete Player By Id");
         System.out.println("\t(4) Add a player");
         System.out.println("\t(5) Update a player by Id");
@@ -143,37 +146,49 @@ public class App
 
         int choice = validInt();
         String message = "";
+        MovieDAOInterface movieDao = new MySqlMovieDao();
+        Scanner key = new Scanner (System.in);
         switch (choice){
             case 1:{
                 message = "1";
-
-                List<User> users = IUserDao.findAllUsers();     // call a method in the DAO
-
-                if( users.isEmpty() )
-                    System.out.println("There are no Users");
-                else {
-                    for (User user : users)
-                        System.out.println("User: " + user.toString());
-                }
-
-
-
-
+                List<Movie> movies = movieDao.getAllMovies();
+                System.out.println("movies: " + movies);
                 break;
             }
             case 2:{
                 message = "2";
-
+                System.out.println("Please, enter movie name: ");
+                String input = key.next();
+                Movie usersMovie = movieDao.findMovieByName(input);
+                System.out.println("Movie you searched: " + usersMovie.toString());
                 break;
             }
             case 3:{
                 message = "3";
-
+                System.out.println("Please, enter movie name: ");
+                String input = key.next();
+                int numberOfDeletedRows = movieDao.deleteMovieByName(input);
+                System.out.println("Number of rows you've deleted: " + numberOfDeletedRows);
                 break;
             }
             case 4:{
                 message = "4";
 
+                System.out.println("Please, enter movie name: ");
+                String name = key.next();
+                System.out.println("Please, enter director name: ");
+                String directorName = key.next();
+                System.out.println("Please, enter movie genre: ");
+                String genre = key.next();
+                System.out.println("Please, enter movie studio: ");
+                String studio = key.next();
+                System.out.println("Please, enter movie year: ");
+                int year = validInt();
+                System.out.println("Please, enter movie year: ");
+                float boxOfficeGain = validInt();
+
+                Movie usersMovie = movieDao.addMovie(name, directorName, genre, studio, year, boxOfficeGain);
+                System.out.println("Movie you searched: " + usersMovie.toString());
                 break;
             }
             case 5:{
@@ -213,7 +228,33 @@ public class App
         return choice;
     }
 
+    public static float validFloat(){
+        Scanner keyValid2 = new Scanner(System.in);
+        boolean runWhile= true;
+        float choice = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid2.hasNextFloat() ){
+                choice = keyValid2.nextFloat();
+
+                if(choice<7 && choice> 0){
+                    runWhile= false;
+                }else{
+                    System.out.println("Please, enter a number between 1 and 7.");
+                }
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid2.nextFloat();
+            }
+        }
+        return choice;
+    }
+
 
 
 
 }
+
+

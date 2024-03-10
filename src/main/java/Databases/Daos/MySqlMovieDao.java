@@ -11,6 +11,7 @@ import java.util.List;
 public class MySqlMovieDao  extends MySqlDao implements MovieDAOInterface{
 
     @Override
+
     public List<Movie> getAllMovies() throws DaoException
     {
         Connection connection = null;
