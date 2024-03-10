@@ -161,7 +161,18 @@ public class App
                 break;
             };
             case 4:{
-                System.out.println("4");
+                message = "4";
+
+                System.out.println("Please, enter movie name: ");
+                String name = key.next();
+                System.out.println("Please, enter director name: ");
+                String directorName = key.next();
+                System.out.println("Please, enter movie genre: ");
+                String genre = key.next();
+
+                //  Movie usersMovie = movieDao.addMovie();
+                System.out.println("Movie you searched: " + usersMovie.toString());
+                break;
             };
             case 5:{
                 System.out.println("5");
