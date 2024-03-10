@@ -8,6 +8,7 @@ import java.util.List;
 
 public class JsonConverter {
     static MovieDAOInterface movieDao = new MySqlMovieDao();
+    Scanner key = new Scanner(System.in);
 
     public static void converteSingleToJSON() throws DaoException {
         Gson gsonParser = new Gson();
