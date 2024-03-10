@@ -173,8 +173,12 @@ public class App
                 String studio = key.next();
                 System.out.println("Please, enter movie year: ");
                 int year = validInt();
+                System.out.println("Please, enter movie year: ");
+                int year = validInt();
+                System.out.println("Please, enter movie year: ");
+                float boxOfficeGain = validInt();
 
-                //  Movie usersMovie = movieDao.addMovie();
+                Movie usersMovie = movieDao.addMovie(name, directorName, genre, studio, year, boxOfficeGain);
                 System.out.println("Movie you searched: " + usersMovie.toString());
                 break;
             };
@@ -206,6 +210,30 @@ public class App
             }else{
                 System.out.println("Please, enter an integer value.");
                 keyValid.next();
+            }
+        }
+        return choice;
+    }
+
+    public static float validFloat(){
+        Scanner keyValid2 = new Scanner(System.in);
+        boolean runWhile= true;
+        float choice = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid2.hasNextFloat() ){
+                choice = keyValid2.nextFloat();
+
+                if(choice<7 && choice> 0){
+                    runWhile= false;
+                }else{
+                    System.out.println("Please, enter a number between 1 and 7.");
+                }
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid2.nextFloat();
             }
         }
         return choice;
