@@ -186,19 +186,16 @@ public class App
                 int year = validInt();
                 System.out.println("Please, enter movie year: ");
                 float boxOfficeGain = validInt();
-
                 Movie usersMovie = movieDao.addMovie(name, directorName, genre, studio, year, boxOfficeGain);
                 System.out.println("Movie you searched: " + usersMovie.toString());
                 break;
             }
             case 5:{
                 message = "5";
-
                 break;
             }
             case 6:{
                 message = "6";
-
                 break;
             }
         }
