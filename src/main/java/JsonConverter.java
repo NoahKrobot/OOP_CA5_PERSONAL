@@ -11,7 +11,10 @@ public class JsonConverter {
 
     public static void converteSingleToJSON() throws DaoException {
 
-    
+        List<Movie> movies = movieDao.getAllMovies();
+        Gson gsonParser = new Gson();
+        String jsonString = gsonParser.toJson(movies);
+        System.out.println("All movies JSON: \n"+jsonString);
 
     }
 }
