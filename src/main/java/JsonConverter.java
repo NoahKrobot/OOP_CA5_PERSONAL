@@ -10,11 +10,17 @@ public class JsonConverter {
     static MovieDAOInterface movieDao = new MySqlMovieDao();
 
     public static void converteSingleToJSON() throws DaoException {
+        Gson gsonParser = new Gson();
 
         List<Movie> movies = movieDao.getAllMovies();
-        Gson gsonParser = new Gson();
         String jsonString = gsonParser.toJson(movies);
         System.out.println("All movies JSON: \n"+jsonString);
+
+
+        String input = key.next();
+        Movie usersMovie = movieDao.findMovieByName(input);
+        String jsonStringOneMovie = gsonParser.toJson(usersMovie);
+        System.out.println("All movies JSON: \n"+jsonStringOneMovie);
 
     }
 }
