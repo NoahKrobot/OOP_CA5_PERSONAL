@@ -183,11 +183,21 @@ public class App
                 break;
             };
             case 5:{
-                System.out.println("5");
-            };
+                List<Movie> movies = movieDao.getAllMovies();
+                ArrayList<Integer> movieIDS =  new ArrayList<>();
+
+                int increment = 1;
+                for(Movie m: movies){
+                    System.out.println("("+increment+ ") "+m);
+                    movieIDS.add(m.getId());
+                    increment++;
+                }
+                break;
+            }
             case 6:{
                 System.out.println("6");
-            };
+                break;
+            }
         }
     }
 
