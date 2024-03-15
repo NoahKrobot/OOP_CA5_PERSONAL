@@ -183,6 +183,8 @@ public class App
                 break;
             };
             case 5:{
+                System.out.println("5");
+
                 List<Movie> movies = movieDao.getAllMovies();
                 ArrayList<Integer> movieIDS =  new ArrayList<>();
 
@@ -192,6 +194,14 @@ public class App
                     movieIDS.add(m.getId());
                     increment++;
                 }
+
+                int userInputIndex = validIntEDIT(movies);
+                userInputIndex--;
+                int idFromList = movies.get(userInputIndex).getId();
+                Movie movieToBePassed = movies.get(userInputIndex);
+                Movie updatedMovie =  movieDao.updateMovie(idFromList, movieToBePassed);
+                System.out.println(updatedMovie);
+
                 break;
             }
             case 6:{
@@ -199,6 +209,33 @@ public class App
                 break;
             }
         }
+    }
+
+
+    public static int validIntEDIT(List<Movie> movies){
+        Scanner keyValid = new Scanner(System.in);
+        boolean runWhile= true;
+        int userInputIndex = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid.hasNextInt() ){
+                userInputIndex = keyValid.nextInt();
+
+                if(userInputIndex> movies.size()){
+                    System.out.println("Invalid id.");
+                }else{
+                    runWhile=false;
+
+                }
+
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid.next();
+            }
+        }
+        return userInputIndex;
     }
 
     public static int validInt(){
