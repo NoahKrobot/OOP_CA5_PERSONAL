@@ -168,7 +168,7 @@ public class App
 
                 System.out.println("\nPlease, enter movie year: ");
                 System.out.println("Current year: " + movieToBePassed.getYear());
-                int year = validInt();
+                int year = validIntYEAR();
 
                 if(year==0){
                     editedMovie.setYear(movieToBePassed.getYear());
@@ -225,6 +225,29 @@ public class App
         return choice;
     }
 
+    public static int validIntYEAR(){
+        Scanner keyValid = new Scanner(System.in);
+        boolean runWhile= true;
+        int choice = 0;
+
+        while(runWhile){
+            System.out.println("\nEnter your choice:");
+
+            if(keyValid.hasNextInt() ){
+                choice = keyValid.nextInt();
+
+                if(choice> 1880){
+                    runWhile= false;
+                }else{
+                    System.out.println("Please, enter a valid year.");
+                }
+            }else{
+                System.out.println("Please, enter an integer value.");
+                keyValid.next();
+            }
+        }
+        return choice;
+    }
     public static int validIntEDIT(List<Movie> movies){
         Scanner keyValid = new Scanner(System.in);
         boolean runWhile= true;
