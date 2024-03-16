@@ -118,10 +118,78 @@ public class App
 
                 int userInputIndex = validIntEDIT(movies);
                 userInputIndex--;
-                    int idFromList = movies.get(userInputIndex).getId();
-                    Movie movieToBePassed = movies.get(userInputIndex);
-                    Movie updatedMovie =  movieDao.updateMovie(idFromList, movieToBePassed);
-                    System.out.println(updatedMovie);
+                int idFromList = movies.get(userInputIndex).getId();
+                Movie movieToBePassed = movies.get(userInputIndex);
+                Movie editedMovie = new Movie();
+
+                System.out.println("*** EDIT ***");
+                System.out.println("If you enter '0', the value will stay the same.");
+                System.out.println("\nPlease, enter movie name");
+                System.out.println("Current name: " + movieToBePassed.getMovieName());
+                String name = key.nextLine();
+
+                if(name.equals("0")){
+                    editedMovie.setMovieName(movieToBePassed.getMovieName());
+                }else{
+                    editedMovie.setMovieName(name);
+                }
+
+                System.out.println("\nPlease, enter director name: ");
+                System.out.println("Current director: " + movieToBePassed.getDirectorName());
+
+                String directorName = key.nextLine();
+
+                if(directorName.equals("0")){
+                    editedMovie.setDirectorName(movieToBePassed.getDirectorName());
+                }else{
+                    editedMovie.setDirectorName(directorName);
+                }
+
+
+                System.out.println("\nPlease, enter movie genre: ");
+                System.out.println("Current genre: " + movieToBePassed.getGenre());
+                String genre = key.nextLine();
+                if(genre.equals("0")){
+                    editedMovie.setGenre(movieToBePassed.getGenre());
+                }else{
+                    editedMovie.setGenre(genre);
+                }
+
+                System.out.println("\nPlease, enter movie studio: ");
+                System.out.println("Current studio: " + movieToBePassed.getStudio());
+                String studio = key.nextLine();
+
+                if(studio.equals("0")){
+                    editedMovie.setStudio(movieToBePassed.getStudio());
+                }else{
+                    editedMovie.setStudio(studio);
+                }
+
+
+                System.out.println("\nPlease, enter movie year: ");
+                System.out.println("Current year: " + movieToBePassed.getYear());
+                int year = validInt();
+
+                if(year==0){
+                    editedMovie.setYear(movieToBePassed.getYear());
+                }else{
+                    editedMovie.setYear(year);
+                }
+
+                System.out.println("\nPlease, enter movie box office gain: ");
+                System.out.println("Current box office gain: " + movieToBePassed.getBoxOfficeGain());
+                float boxOfficeGain = validFloat();
+
+                if(boxOfficeGain==0){
+                    editedMovie.setBoxOfficeGain(movieToBePassed.getBoxOfficeGain());
+                }else{
+                    editedMovie.setBoxOfficeGain(boxOfficeGain);
+                }
+
+                Movie updatedMovie =  movieDao.updateMovie(idFromList, editedMovie);
+
+                System.out.println("\nUpdated movie: ");
+                System.out.println(updatedMovie);
 
                 break;
             }
@@ -202,12 +270,7 @@ public class App
 
             if(keyValid2.hasNextFloat() ){
                 choice = keyValid2.nextFloat();
-
-                if(choice<7 && choice> 0){
                     runWhile= false;
-                }else{
-                    System.out.println("Please, enter a number between 1 and 7.");
-                }
             }else{
                 System.out.println("Please, enter an integer value.");
                 keyValid2.nextFloat();
