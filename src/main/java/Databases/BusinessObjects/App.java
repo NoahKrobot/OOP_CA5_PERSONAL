@@ -18,6 +18,7 @@ package Databases.BusinessObjects;
  */
 
 import Databases.DTOs.Movie;
+import Databases.DTOs.MovieComparator;
 import Databases.Daos.MovieDAOInterface;
 import Databases.Daos.MySqlMovieDao;
 import Databases.Exceptions.DaoException;
@@ -194,11 +195,101 @@ public class App
                 break;
             }
             case 6:{
-                System.out.println("6");
+                int filterChoice = 0;
+                System.out.println("By what would you like to filter movies?");
+                int counterChoice = 1;
+                System.out.println("("+counterChoice+")"+"by MOVIE_ID.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by MOVIE_NAME.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by DIRECTOR_NAME.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by GENRE.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by STUDIO.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by YEAR.");
+                counterChoice++;
+                System.out.println("("+counterChoice+")"+"by BOXOFFICE_GAIN.");
+
+                System.out.println("\nEnter your choice: ");
+                filterChoice = key.nextInt();
+                String stringToPass ="";
+
+                switch (filterChoice){
+                    case 1:{
+                        MovieComparator movieComparator = new MovieComparator("MOVIE_ID", 3);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+
+                        break;
+                    }
+                    case 2:{
+                        System.out.println("Enter a movie name you'd like to filter by: ");
+                        stringToPass = key.nextLine();
+                        MovieComparator movieComparator = new MovieComparator("MOVIE_NAME", stringToPass);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        System.out.println("test");
+
+                        loopMovies(movies);
+
+                        break;
+                    }
+                    case 3:{
+                        System.out.println("Enter a director you'd like to filter by: ");
+                        stringToPass = key.nextLine();
+                        MovieComparator movieComparator = new MovieComparator("DIRECTOR_NAME", stringToPass);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+
+                        break;
+                    }
+                    case 4:{
+                        System.out.println("Enter a genre you'd like to filter by: ");
+                        stringToPass = key.nextLine();
+                        MovieComparator movieComparator = new MovieComparator("GENRE", stringToPass);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+
+                        break;
+                    }
+                    case 5:{
+                        System.out.println("Enter a studio you'd like to filter by: ");
+                        stringToPass = key.nextLine();
+                        MovieComparator movieComparator = new MovieComparator("STUDIO", stringToPass);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+
+
+                        break;
+                    }
+                    case 6:{
+                        MovieComparator movieComparator = new MovieComparator("YEAR", 2000);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+
+                        break;
+                    }
+                    case 7:{
+                        MovieComparator movieComparator = new MovieComparator("BOXOFFICE_GAIN", 2000);
+                        List<Movie> movies = movieDao.getMoviesByFilter(movieComparator);
+                        loopMovies(movies);
+                        break;
+                    }
+                }
                 break;
             }
         }
     }
+
+    public static void loopMovies(List<Movie> movies){
+
+        for(Movie m: movies){
+            System.out.println(m);
+        }
+
+    }
+
 
     //author: Noah Krobot
     public static int validInt(){
