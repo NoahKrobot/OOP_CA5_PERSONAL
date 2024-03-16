@@ -31,6 +31,44 @@ public class Movie {
     public Movie() {
     }
 
+    // for testing equals
+    public Movie(String movieName) {
+        this.movieName = movieName;
+        this.directorName = "";
+        this.genre = "";
+        this.studio = "";
+        this.year = 0;
+        this.boxOfficeGain = 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie[" +
+                "id=" + id +
+                ", movieName='" + movieName + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", genre='" + genre + '\'' +
+                ", studio='" + studio + '\'' +
+                ", year=" + year +
+                ", boxOfficeGain=" + boxOfficeGain +
+                ']';
+    }
+
+    //-- Main Author: Sean Mooney
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Movie otherMovie = (Movie) obj;
+        return this.movieName.equals(otherMovie.getMovieName());
+    }
+
     public Movie(int id, String movieName, String directorName, String genre, String studio, int year, float boxOfficeGain) {
         this.id = id;
         this.movieName = movieName;
@@ -41,8 +79,26 @@ public class Movie {
         this.boxOfficeGain = boxOfficeGain;
     }
 
+    public Movie(String movieName, String directorName, String genre, String studio, int year, float boxOfficeGain) {
+        this.id = 0;
+        this.movieName = movieName;
+        this.directorName = directorName;
+        this.genre = genre;
+        this.studio = studio;
+        this.year = year;
+        this.boxOfficeGain = boxOfficeGain;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public void setId(int id) {
