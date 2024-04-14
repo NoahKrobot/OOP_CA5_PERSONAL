@@ -1,6 +1,3 @@
-package MultiThread;
-
-
 import Databases.DTOs.Movie;
 import Databases.Daos.MySqlMovieDao;
 import Databases.Exceptions.DaoException;
