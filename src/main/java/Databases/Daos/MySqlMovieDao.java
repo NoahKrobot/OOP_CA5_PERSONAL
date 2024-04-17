@@ -14,6 +14,50 @@ public class MySqlMovieDao extends MySqlDao implements MovieDAOInterface {
 
 
     @Override
+    public Movie findMovieById(int id) throws DaoException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Movie movie = null;
+        try {
+            connection = this.getConnection();
+
+            String query = "SELECT * FROM MOVIES WHERE MOVIE_ID = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int movieId = resultSet.getInt("MOVIE_ID");
+                String movieName = resultSet.getString("MOVIE_NAME");
+                String directorName = resultSet.getString("DIRECTOR_NAME");
+                String genre = resultSet.getString("GENRE");
+                String studio = resultSet.getString("STUDIO");
+                int year = resultSet.getInt("YEAR");
+                float boxOfficeGain = resultSet.getFloat("BOXOFFICE_GAIN");
+
+                movie = new Movie(movieId, movieName, directorName, genre, studio, year, boxOfficeGain);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findMovieByName() " + e.getMessage());
+            }
+        }
+        return movie;
+    }
+    @Override
     public List<Movie> getMoviesByFilter(MovieComparator movieComparator) throws DaoException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -247,6 +291,42 @@ public class MySqlMovieDao extends MySqlDao implements MovieDAOInterface {
             }
         }
         return movie;     // reference to User object, or null value
+    }
+
+    @Override
+    public int deleteMovie(int id) throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        int numberOfDeletedRows = -1;
+        try {
+            //Get connection object using the getConnection() method inherited
+            // from the super class (MySqlDao.java)
+            connection = this.getConnection();
+
+            String query = "DELETE FROM MOVIES WHERE MOVIE_ID = ? ";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+
+            //Using a PreparedStatement to execute SQL...
+            numberOfDeletedRows = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException("deleteMovieByName() " + e.getMessage());
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    freeConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DaoException("findAllUsers() " + e.getMessage());
+            }
+        }
+        return numberOfDeletedRows;
     }
 
     @Override

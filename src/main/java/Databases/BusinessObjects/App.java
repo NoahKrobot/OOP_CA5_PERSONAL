@@ -35,14 +35,14 @@ public class App
 
 
     //author: Noah Krobot
-    public static void runTheApplication() throws DaoException {
+     static void runTheApplication() throws DaoException {
         System.out.println("Enter a number to run an action:");
         System.out.println("\t(1) Get All Movies");
         System.out.println("\t(2) Get Movies By Id");
         System.out.println("\t(3) Delete Movies By Id");
         System.out.println("\t(4) Add a Movie");
         System.out.println("\t(5) Update a movie by Id");
-        System.out.println("\t(6) Find players using filter");
+        System.out.println("\t(6) Find Movie using filter");
 
         int choice = validInt();
         String message = "";
@@ -56,18 +56,20 @@ public class App
             case 1:{
                 message = "1";
                 System.out.println("\n\n*** getAllMovies ***");
-                JsonConverter.converteAllMoviesToJSON();
+                List<Movie> movies = movieDao.getAllMovies();
+                String result = JsonConverter.converteAllMoviesToJSON(movies);
+                System.out.println(result);
 //                List<Movie> movies = movieDao.getAllMovies();
 //                System.out.println("movies: " + movies);
                 break;
             }
             case 2:{
                 message = "2";
-                System.out.println("\n\n*** findMovieByName ***");
+                System.out.println("\n\n*** findMovieById ***");
 
-                System.out.println("Please, enter movie name: ");
-                String input = key.next();
-                Movie usersMovie = movieDao.findMovieByName(input);
+                System.out.println("Please, enter movie id: ");
+                int input = key.nextInt();
+                Movie usersMovie = movieDao.findMovieById(input);
                 System.out.println("Movie you searched: " + usersMovie.toString());
                 break;
             }
@@ -75,9 +77,9 @@ public class App
                 message = "3";
                 System.out.println("\n\n*** deleteMovieByName ***");
 
-                System.out.println("Please, enter movie name: ");
-                String input = key.next();
-                int numberOfDeletedRows = movieDao.deleteMovieByName(input);
+                System.out.println("Please, enter movie id: ");
+                int input = key.nextInt();
+                int numberOfDeletedRows = movieDao.deleteMovie(input);
                 System.out.println("Number of rows you've deleted: " + numberOfDeletedRows);
                 break;
             }
@@ -119,9 +121,9 @@ public class App
 
                 int userInputIndex = validIntEDIT(movies);
                 userInputIndex--;
-                int idFromList = movies.get(userInputIndex).getId();
-                Movie movieToBePassed = movies.get(userInputIndex);
-                Movie editedMovie = new Movie();
+                    int idFromList = movies.get(userInputIndex).getId();
+                    Movie movieToBePassed = movies.get(userInputIndex);
+                    Movie editedMovie = new Movie();
 
                 System.out.println("*** EDIT ***");
                 System.out.println("If you enter '0', the value will stay the same.");
@@ -254,6 +256,8 @@ public class App
     }
 
 
+
+
     //author: Noah Krobot
     public static int validInt(){
         Scanner keyValid = new Scanner(System.in);
@@ -302,6 +306,7 @@ public class App
         }
         return choice;
     }
+
     public static int validIntEDIT(List<Movie> movies){
         Scanner keyValid = new Scanner(System.in);
         boolean runWhile= true;
@@ -348,6 +353,7 @@ public class App
             if(keyValid2.hasNextFloat() ){
                 choice = keyValid2.nextFloat();
                     runWhile= false;
+
             }else{
                 System.out.println("Please, enter an integer value.");
                 keyValid2.nextFloat();

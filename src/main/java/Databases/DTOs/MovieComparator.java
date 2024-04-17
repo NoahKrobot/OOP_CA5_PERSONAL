@@ -17,6 +17,7 @@ public class MovieComparator implements Comparator<Movie> {
         return compareType;
     }
 
+
     public MovieComparator(String compareBy, String compareTo){
         this.compareBy = compareBy;
         this.compareToString = compareTo;
@@ -40,6 +41,7 @@ public class MovieComparator implements Comparator<Movie> {
         this.compareToFloat = compareTo;
         compareType = "Float";
     }
+
 
     public int getCompareToInt() {
         return compareToInt;

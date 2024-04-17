@@ -1,10 +1,28 @@
 import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class ClientTest extends TestCase {
-
-    public void testStart() {
-        Client client = new Client();
+    public ClientTest() throws IOException {
+    }
+    public void testStart() throws IOException {
+        Server_Client.Client client = new Server_Client.Client();
         client.start();
         assertTrue(true); //wont be done if the client.start() throws exception
+    }
+
+    Socket socket = new Socket("localhost", 1090);
+    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    @Test
+    public void testGetPosterList() throws IOException {
+        String expected = "Poster list : 1.Blade Runner 2.Dune 3.Poor things";
+        String actual = Server_Client.Client.sendRequest(out, "getPosterList", in);
+        assertEquals(expected, actual);
     }
 }
