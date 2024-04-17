@@ -40,4 +40,11 @@ public class ClientTest extends TestCase {
         String actual = Client.sendRequest(out, "getAllMovies", in);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testDeleteMovie() throws IOException {
+        String expected = "Server message: Movie deleted from database";
+        String actual = Client.sendRequest(out, "deleteMovie", in);
+        assertEquals(expected, actual);
+    }
 }
