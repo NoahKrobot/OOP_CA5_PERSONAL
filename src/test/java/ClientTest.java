@@ -1,3 +1,4 @@
+import Server_Client.Client;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -23,6 +24,13 @@ public class ClientTest extends TestCase {
     public void testGetPosterList() throws IOException {
         String expected = "Poster list : 1.Blade Runner 2.Dune 3.Poor things";
         String actual = Server_Client.Client.sendRequest(out, "getPosterList", in);
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void testGetMovieByID() throws IOException {
+        String expected = "{\"id\":1,\"movieName\":\"Dune Part 1\",\"directorName\":\"Jackie Chan\",\"genre\":\"Horror\",\"studio\":\"Electra Records\",\"year\":4,\"boxOfficeGain\":4563560.0}";
+
+        String actual = Client.sendRequest(out, "getMovieByID", in);
         assertEquals(expected, actual);
     }
 }
