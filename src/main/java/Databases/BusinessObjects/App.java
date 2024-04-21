@@ -43,6 +43,7 @@ public class App
         System.out.println("\t(4) Add a Movie");
         System.out.println("\t(5) Update a movie by Id");
         System.out.println("\t(6) Find Movie using filter");
+         System.out.println("\t(7) Find movies starring an actor");
 
         int choice = validInt();
         String message = "";
@@ -59,8 +60,6 @@ public class App
                 List<Movie> movies = movieDao.getAllMovies();
                 String result = JsonConverter.converteAllMoviesToJSON(movies);
                 System.out.println(result);
-//                List<Movie> movies = movieDao.getAllMovies();
-//                System.out.println("movies: " + movies);
                 break;
             }
             case 2:{
@@ -244,6 +243,19 @@ public class App
                 }
                 break;
             }
+            case 7:{
+                System.out.println("Enter the actor you would like to search by:");
+                String actor = key.nextLine();
+                List<Movie> movies = movieDao.findMovieLikeActor(actor);
+                if (movies.isEmpty()) {
+                    System.out.println("No movies returned");
+                } else {
+                    for (Movie movie:movies){
+                        System.out.println(movie);
+                    }
+                }
+                break;
+            }
         }
     }
 
@@ -270,7 +282,7 @@ public class App
             if(keyValid.hasNextInt() ){
                 choice = keyValid.nextInt();
 
-                if(choice<7 && choice> 0){
+                if(choice<8 && choice> 0){
                     runWhile= false;
                 }else{
                     System.out.println("Please, enter a number between 1 and 7.");

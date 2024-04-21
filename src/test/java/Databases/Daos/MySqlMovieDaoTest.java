@@ -1,8 +1,7 @@
-package java.Databases.Daos;
+package Databases.Daos;
 
 import Databases.DTOs.Movie;
 import Databases.DTOs.MovieComparator;
-import Databases.Daos.MySqlMovieDao;
 import Databases.Exceptions.DaoException;
 import junit.framework.TestCase;
 

@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 //-- Main Author: Sean Mooney
 public class Server {
 
-    final int SERVER_PORT_NUMBER = 1090;  // could be any port from 1024 to 49151 (that doesn't clash with other Apps)
+    final int SERVER_PORT_NUMBER = 1050;  // could be any port from 1024 to 49151 (that doesn't clash with other Apps)
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -109,34 +109,11 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
         try {
             String request;
             MySqlMovieDao mySqlMovieDao = new MySqlMovieDao();
-
             while ((request = socketReader.readLine()) != null) {
-                System.out.println("Server: (ClientHandler): Read command from client " + clientNumber + ": " + request);
-                switch (request) {
-                    case "getMovieByID":
-                        handleGetMovieByID(mySqlMovieDao);
-                        break;
-                    case "getAllMovies":
-                        handleGetAllMovies(mySqlMovieDao);
-                        break;
-                    case "getPosterList":
-                        handleGetPosterList();
-                        break;
-                    case "getPosterImage":
-                        handleGetPosterImage();
-                        break;
-                    case "addMovie":
-                        handleAddMovie(mySqlMovieDao);
-                        break;
-                    case "deleteMovie":
-                        handleDeleteMovie(mySqlMovieDao);
-                        break;
-                    case "quit":
-                        handleQuit();
-                        break;
-                    default:
-                        handleInvalidRequest();
-                }
+                int spaceIndex = request.indexOf(' ');
+                String requestCommand = request.substring(0, spaceIndex);
+                System.out.println("Server: (ClientHandler): Read command from client " + clientNumber + ": " + requestCommand);
+                switchMethod(requestCommand, request);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -146,17 +123,53 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
         System.out.println("Server: (ClientHandler): Handler for Client " + clientNumber + " is terminating .....");
     }
 
-    private void handleGetMovieByID(MySqlMovieDao mySqlMovieDao) throws IOException, DaoException {
-        int movieId = Integer.parseInt(socketReader.readLine().substring(13));
+
+
+    private void switchMethod(String requestCommand, String request) throws Exception {
+        MySqlMovieDao mySqlMovieDao = new MySqlMovieDao();
+
+        switch (requestCommand) {
+            case "getMovieByID":
+                handleGetMovieByID(mySqlMovieDao,request);
+                break;
+            case "getAllMovies":
+                handleGetAllMovies(mySqlMovieDao);
+                break;
+            case "getPosterList":
+                handleGetPosterList();
+                break;
+            case "getPosterImage":
+                handleGetPosterImage();
+                break;
+            case "addMovie":
+                handleAddMovie(mySqlMovieDao,request);
+                break;
+            case "deleteMovie":
+                handleDeleteMovie(mySqlMovieDao,request);
+                break;
+            case "quit":
+                handleQuit();
+                break;
+            default:
+                handleInvalidRequest();
+        }
+    }
+
+    private void handleGetMovieByID(MySqlMovieDao mySqlMovieDao,String request) throws IOException, DaoException {
+        int movieId = Integer.parseInt(request.substring(14));
         Movie movie = mySqlMovieDao.findMovieById(movieId);
 
         if (movie != null) {
             String movieString = JsonConverter.convertSingleToJSON(movie);
             socketWriter.println(movieString);
             System.out.println("Server message: movie sent to client");
+            testHelper(true);
+
         } else {
             socketWriter.println("Error retrieving movie from DB");
             System.out.println("Server message: error retrieving movie from db");
+            testHelper(false);
+
         }
     }
 
@@ -166,9 +179,13 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
             String moviesJson = JsonConverter.converteAllMoviesToJSON(movieList);
             socketWriter.println(moviesJson);
             System.out.println("Server message: Sending all movies to client.");
+            testHelper(true);
+
         } else {
             socketWriter.println("Error getting movies");
             System.out.println("Server message: Error Sending all movies to client.");
+            testHelper(false);
+
         }
     }
 
@@ -187,6 +204,8 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
                 sendFile(fileToGet);
             } else {
                 socketWriter.println("Invalid request for file");
+                testHelper(false);
+
             }
     }
 
@@ -206,43 +225,53 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
         fileInputStream.close();
     }
 
-    private void handleAddMovie(MySqlMovieDao mySqlMovieDao) throws IOException, DaoException {
+    private void handleAddMovie(MySqlMovieDao mySqlMovieDao,String request) throws IOException, DaoException {
+        System.out.println("in handle add movie");
         Gson gsonParser = new Gson();
-        String jsonString = socketReader.readLine().substring(8);
+        String jsonString = request.substring(9);
+
+        System.out.println(jsonString);
         Movie movie = gsonParser.fromJson(jsonString, Movie.class);
         if (mySqlMovieDao.createMovie(movie) == null) {
             socketWriter.println("Movie not added to database");
             System.out.println("Server message: Error adding movie to DB.");
+            testHelper(false);
+
         } else {
             socketWriter.println("Movie added to database");
             System.out.println("Server message: Movie added to db.");
+            testHelper(true);
+
         }
     }
 
-    private String handleDeleteMovie(MySqlMovieDao mySqlMovieDao) throws IOException, DaoException {
+    private void handleDeleteMovie(MySqlMovieDao mySqlMovieDao, String request) throws IOException, DaoException {
         String message = "";
-        int movieId = Integer.parseInt(socketReader.readLine().substring(12));
+        int movieId = Integer.parseInt(request.substring(13));
         int deletedRows = mySqlMovieDao.deleteMovie(movieId);
         if (deletedRows == 0) {
             socketWriter.println("Error deleting from database");
             System.out.println("Server message: Error deleting Movie from database");
-            message = "Server message: Error deleting Movie from database";
+            testHelper(false);
         } else {
             socketWriter.println("Movie Deleted from database");
             System.out.println("Server message: Movie deleted from database");
-            message = "Server message: Movie deleted from database";
+            testHelper(true);
         }
-        return message;
     }
 
     private void handleQuit() {
         socketWriter.println("Sorry to see you leaving. Goodbye.");
         System.out.println("Server message: Client has notified us that it is quitting.");
+        testHelper(true);
+
     }
 
     private void handleInvalidRequest() {
         socketWriter.println("Error. I'm sorry I don't understand your request");
         System.out.println("Server message: Invalid request from client.");
+        testHelper(false);
+
     }
 
     private void closeResources() {
@@ -254,6 +283,20 @@ class ClientHandler implements Runnable   // each ClientHandler communicates wit
             ex.printStackTrace();
         }
     }
+
+
+    private String testHelper(boolean methodWorks){
+        String message= "";
+        if(methodWorks){
+            message="Works.";
+        }else{
+            message="Doesn't work.";
+
+        }
+        return message;
+    }
+
+
 }
 
 

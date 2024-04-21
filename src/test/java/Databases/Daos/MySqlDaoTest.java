@@ -1,6 +1,5 @@
-package java.Databases.Daos;
+package Databases.Daos;
 
-import Databases.Daos.MySqlDao;
 import Databases.Exceptions.DaoException;
 import junit.framework.TestCase;
 

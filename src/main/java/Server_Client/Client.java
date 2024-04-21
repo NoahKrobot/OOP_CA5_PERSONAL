@@ -25,7 +25,7 @@ public class Client {
     }
     public static void start() throws IOException {
         try (
-                Socket socket = new Socket("localhost", 1090);
+                Socket socket = new Socket("localhost", 1050);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
@@ -50,17 +50,17 @@ public class Client {
                 switch (choice) {
                     case 1: addMovie(out, in, consoleInput);
                         break;
-                    case 2: sendRequest(out,"getPosterList", in);
+                    case 2: sendRequest(out,"getPosterList ", in);
                         break;
                     case 3: sendPosterRequest(out, in);
                         break;
-                    case 4: sendRequest(out, "getMovieByID", in);
+                    case 4: sendRequestGetMovieById(out, "getMovieByID ", in);
                         break;
-                    case 5: sendRequest(out, "getAllMovies", in);
+                    case 5: sendRequest(out, "getAllMovies ", in);
                         break;
-                    case 6: sendRequest(out, "deleteMovie", in);
+                    case 6: deleteMovie(out, "deleteMovie ", in);
                         break;
-                    case 7: sendRequest(out, "quit", in);
+                    case 7: sendRequest(out, "quit ", in);
                         System.out.println("Exiting client, but server may still be running.");
                         return;
                     default:
@@ -101,8 +101,27 @@ public class Client {
         System.out.println(response);
         return response;
     }
+
+
+    public static void deleteMovie(PrintWriter out, String request, BufferedReader in) throws IOException {
+        System.out.println("Enter the id of movie you want to delete: ");
+        Scanner input = new Scanner(System.in);
+        String movieNumber = input.next();
+        out.println(request+" "+movieNumber);
+        String response = in.readLine();
+        System.out.println(response);
+    }
+    public static String sendRequestGetMovieById(PrintWriter out, String request, BufferedReader in) throws IOException {
+        System.out.println("Enter the id of movie you are looking for: ");
+        Scanner input = new Scanner(System.in);
+        String movieNumber = input.next();
+        out.println(request+" "+movieNumber);
+        String response = in.readLine();
+        System.out.println(response);
+        return response;
+    }
     private static void sendPosterRequest(PrintWriter out, BufferedReader in) throws Exception {
-        out.println("getPosterImage");
+        out.println("getPosterImage ");
         String response = in.readLine();
         System.out.println(response);
         Scanner input = new Scanner(System.in);
